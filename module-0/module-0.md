@@ -1,7 +1,11 @@
 Selector: `.error-text`
+
 Property: `color`, `font-size`
+
 First declaration: `color: red;`
+
 Second declaration: `font-size: 25px;`
+
 Rule:
 
 ```css
