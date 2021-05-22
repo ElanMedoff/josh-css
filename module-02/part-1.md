@@ -65,9 +65,9 @@ If specify a value for a single axis i.e. `left: 32px` but omit any `top` or `bo
 
 You can use `margin` to tweak the vertical position within its block, which is nice because you don't have to worry about the added side affects of the margin pulling its siblings along for the ride.
 
-### Absolute Positioning
+### Absolute centering
 
-Need 4 things:
+Need 4 things to center an element with absolute positioning:
 
 1. `position: absolute`
 2. `top`, `left`, `right`, `bottom` all have to be set to `0`
