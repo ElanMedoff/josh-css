@@ -41,3 +41,62 @@ This gives us the property `overflow`, let's look at some examples:
 This will help prevent an undesired horizontal scrollbar as well.
 
 ## horizontal overflow
+
+Images are inline by default, so they'll line-wrap when they can't all fit.
+
+To tell a wrapper never to break the line, set `white-space: nowrap` and `overflow: auto` to
+horizontally scroll.
+
+## overflow and containing blocks
+
+In order for the overflow property of a parent to apply to the child, the child must be contained by the parent! This means that if you have a child positioned absolutely, and a parent that is statically positioned (so the child isn't contained by the parent), any overflow properties of the parent don't apply to the child!
+
+# sticky positioning
+
+In addition to setting `position: sticky`, you also need to pick at least one edge to stick to (top, right, bottom, or left).
+
+## stays in their box
+
+Sticky positioned elements only act as fixed within their own box, which means that once you scroll enough so that the box isn't visible, the element goes back to normal positioning and scrolls away too!
+
+Can create some pretty cool effects.
+
+## offset
+
+The top, right, bottom or left values (with position sticky specifically) determine the minimum gap between the element and the edge of the viewport before the element starts acting fixed.
+
+## not incorporeal
+
+Sticky elements do take up space while they act non-fixed, unlike absolutely or fixed elements.
+
+# troubleshooting
+
+## a parent is hiding overflow
+
+if an ancestor has `overflow` set to `hidden`, `scroll`, or `auto`, `position: sticky` won't work. Use this snippet to find the bad ancestors:
+
+```js
+// Replace this with a relevant selector.
+// If you use a tool that auto-generates classes,
+// you can temporarily add an ID and select it
+// with '#id'.
+const selector = ".the-fixed-child";
+function findCulprits(elem) {
+  if (!elem) {
+    throw new Error("Could not find element with that selector");
+  }
+  let parent = elem.parentElement;
+  while (parent) {
+    const hasOverflow = getComputedStyle(parent).overflow;
+    if (hasOverflow !== "visible") {
+      console.log(hasOverflow, parent);
+    }
+    parent = parent.parentElement;
+  }
+}
+findCulprits(document.querySelector(selector));
+```
+
+## the container isn't big enough
+
+If the container isn't big enough, the child will hit the top of the container immediately, and it won't stick!
