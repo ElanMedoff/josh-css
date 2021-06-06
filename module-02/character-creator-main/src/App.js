@@ -1,12 +1,18 @@
-import React from 'react';
+import React from "react";
 
-import CharacterEditor from './components/CharacterEditor';
-import Footer from './components/Footer';
+import CharacterEditor from "./components/CharacterEditor";
+import Footer from "./components/Footer";
 
 function App() {
   return (
     <>
-      <CharacterEditor />
+      <div className="stacking">
+        <CharacterEditor />
+        <div className="wrapper">
+          <div className="top"></div>
+          <div className="bottom"></div>
+        </div>
+      </div>
       <Footer />
     </>
   );

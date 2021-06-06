@@ -12,7 +12,7 @@ body {
 *,
 *:before,
 *:after {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   box-sizing: border-box;
 }
 
@@ -29,4 +29,31 @@ body {
   margin: -1px;
   padding: 0;
   border: 0;
+}
+
+.grey {
+  height: 40vh;
+  position: relative;
+  background-color: black;
+  border: solid;
+}
+
+.stacking {
+  isolation: isolate;
+}
+
+.wrapper {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1;
+}
+
+.top {
+  height: 60vh;
+}
+
+.bottom {
+  height: 40vh;
+  background-color: hsl(195deg, 20%, 86%);
 }

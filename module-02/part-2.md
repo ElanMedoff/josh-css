@@ -34,7 +34,13 @@ If we want to specify that one sibling be painted above another, we can follow t
 }
 ```
 
+BUT this only applies to two statically positioned elements, or two non-statically positioned elements. If you have a statically positioned element and a non-statically positioned element in a single stacking context, no matter how much you crank up the z-index of the statically positioned element, it won't go above the non-statically positioned element!
+
 ## Stacking contexts
+
+When a parent is turned into a stacking context by one of the methods below,
+it's children become "isolated" in the sense that they only compete with
+each other (and not other elements) with their z-index.
 
 How to create a stacking context
 
