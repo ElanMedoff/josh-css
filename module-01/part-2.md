@@ -59,9 +59,9 @@ When we use percentage-based widths, those percentages are based on the parent e
 </section>
 ```
 
-Why doesn't this work? The default for height is to be as small as it can. When we set `min-height` to be 100%, we're telling it to be 100% of the parent, which has the default height value, which is as small as it can be while containing the children!!!
+Why doesn't this work? The default for height is to be as small as it can. When we set `min-height` to be 100%, we're telling it to be 100% of the parent, which has the _default_ height value, which is as small as it can be while containing the children!!!
 
-When `html` is given `height: 100%`, it takes up the height of the viewport, which serves as our base. If every child is given `height: 100%`, it will take up the entire viewport! When we finally get to our section, we can use `min-height` again.
+When `html` is given `height: 100%`, it takes up the height of the viewport, which serves as our **base**. If every child is given `height: 100%`, it will take up the entire viewport (since every parent is taking up the entire viewport! When we finally get to our section, we can use `min-height` again, so that at the least we take up the entire viewport, but we can grow if we need to.
 
 ```html
 <style>
