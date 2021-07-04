@@ -107,3 +107,5 @@ justify-content: flex-end;
 - if an element is a flex item but is also positioned absolutely or fixed, the positioning will always win!
 
 - margin collapse is exclusive to flow layout, it doesn't apply to flex layout!
+
+- although `z-index` normally only works on an element that's positioned `relative`, `absolute`, `fixed`, or `sticky`, it also works on children of a parent with `display: flex;`!
