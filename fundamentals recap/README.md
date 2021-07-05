@@ -1,12 +1,21 @@
-Selector: `.error-text`
+# anatomy of a style rule
 
-Property: `color`, `font-size`
+**Selector**: `.error-text`
 
-First declaration: `color: red;`
+**Property**: `color`, `font-size`
 
-Second declaration: `font-size: 25px;`
+**First declaration:** `color: red;`
 
-Rule:
+**Second declaration:** `font-size: 25px;`
+
+**Rule**:
+
+```css
+.error-text {
+  color: red;
+  font-size: 25px;
+}
+```
 
 ```css
 .error-text {
@@ -15,12 +24,7 @@ Rule:
 }
 ```
 
-```css
-.error-text {
-  color: red;
-  font-size: 25px;
-}
-```
+# selectors
 
 targets the immediate child, and no other li descendants
 
@@ -29,6 +33,8 @@ targets the immediate child, and no other li descendants
   border: 2px dotted;
 }
 ```
+
+# color
 
 HSL is the best way to use colors
 H: hue, in degrees, what color
@@ -43,13 +49,14 @@ L: lightness, in percentage, how light/dark
 }
 ```
 
-em: relative to font size of the current element
-rem: relative to font size of the root html tag
+# typography
 
-typography: rem
-padding, border, margin: px
-width/height: fixed, use px, relative, use percentage
-color: hsl
+**em**: relative to font size of the current element
+**rem**: relative to font size of the root html tag
+
+**typography**: rem
+**padding, border, margin**: px
+**width/height**: fixed, use px, relative, use percentage \*\*\*color\*: hsl
 
 Three most popular font families: serif, sans-serif, monospace
 
