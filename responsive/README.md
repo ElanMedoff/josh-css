@@ -214,3 +214,85 @@ can be used to mess with css color variables too
   --pinkred: hsl(calc(var(--red-hue) - 20deg) var(--intense));
 }
 ```
+
+# viewport units
+
+`1vw` is equivalent to 1% of the viewport width, don't overthink it
+
+_any property that accept a length unit can accept a `vh` unit_!
+
+## the mobile height issue
+
+on mobile, `vh` refers to the maximum possible height of the page (i.e. the ui once the url and buttons hide after scrolling), which means when the url and buttons are there on-page-load, `100vh` is actually larger than the visible screen ...
+
+instead, use the 100% height trick from module 01
+
+## the desktop scrollbar issue
+
+`vw` refers to the viewport width _not counting the scrollbar_. this means that the scrollbar will sit on top of our `100vw` element, and will cause a small horizontal scroll :/
+
+### tracking scrollbar width
+
+we can find the scrollbar width in `px` like this:
+
+```js
+const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+```
+
+we can then set a css variable with this value
+
+```js
+document.documentElement.style.setProperty(
+  "--scrollbar-width",
+  scrollbarWidth + "px"
+);
+```
+
+and use calc to work out the `vw` units
+
+```scss
+.wrapper {
+  width: calc(100vw - var(--scrollbar-width));
+}
+```
+
+# clamp
+
+`clamp` takes 3 values:
+
+1. the minimum value
+1. the ideal value
+1. the maximum value
+
+these two are equivalent:
+
+```css
+/* Method 1 */
+.column {
+  min-width: 500px;
+  width: 65%;
+  max-width: 800px;
+}
+/* Method 2 */
+.column {
+  width: clamp(500px, 65%, 800px);
+}
+```
+
+**but** this frees up our `max-width`, which doesn't override the third clamp value, rather acts alongside it:
+
+```css
+.column {
+  width: clamp(500px, 65%, 800px);
+  max-width: 100%;
+}
+```
+
+this means our `.column` will never be larger than 800px or 100% of the available space! whichever is _smaller_ will be the max
+
+- on larger screens, the max width will be 800px, since 800px is smaller than 100%
+- on smaller screens, the max-width will be 100%, since 100% is smaller than 800px
+
+## min and max
+
+if you want to only clamp from one side, you can use the `min()` and `max()` values instead
