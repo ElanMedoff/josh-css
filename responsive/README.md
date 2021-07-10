@@ -296,3 +296,5 @@ this means our `.column` will never be larger than 800px or 100% of the availabl
 ## min and max
 
 if you want to only clamp from one side, you can use the `min()` and `max()` values instead
+
+# responsive typography

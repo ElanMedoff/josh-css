@@ -1,0 +1,162 @@
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+  font-family: sans-serif;
+  line-height: 1.5;
+}
+
+h1 {
+  font-size: clamp(1.75rem, 3vw + 1rem, 3rem);
+  font-weight: bold;
+  margin-bottom: 16px;
+  line-height: 1.35;
+}
+
+h2 {
+  position: relative;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 16px;
+  margin-top: 48px;
+}
+
+main {
+  padding-top: 64px;
+  isolation: isolate;
+  max-width: 100%;
+}
+
+article p,
+article li {
+  font-size: 1.125rem;
+  margin-bottom: 24px;
+}
+
+article ul {
+  list-style-type: initial;
+  padding-left: 16px;
+}
+
+footer {
+  margin-top: 96px;
+  background: hsl(0deg 0% 90%);
+  padding: 32px;
+  text-align: center;
+}
+
+a {
+  color: deeppink;
+  text-underline-offset: 0.1em;
+  text-decoration-thickness: 2px;
+}
+
+.site-header-wrapper {
+  position: sticky;
+  z-index: 2;
+  top: 0;
+  background: white;
+}
+
+.site-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 12px;
+
+  margin: 0 auto;
+  max-width: 800px;
+}
+
+.main-article {
+  padding: 0 12px;
+}
+
+.site-header ul {
+  list-style-type: none;
+  display: flex;
+  font-size: 1.125rem;
+}
+.site-header li:not(:last-of-type) {
+  margin-right: 5vw;
+}
+
+.logo {
+  font-size: 1.25rem;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.hero-image {
+  display: block;
+  max-width: 100%;
+  margin-bottom: 64px;
+}
+
+.max-width-wrapper {
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.visually-hidden {
+  position: absolute;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  width: 1px;
+  margin: -1px;
+  padding: 0px;
+  border: 0;
+}
+
+.social-wrapper {
+  position: sticky;
+  top: 0px;
+}
+
+.social-icons {
+  width: 100px;
+  height: 0px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: translate(-150%, 200px);
+}
+
+.social-icons a {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  opacity: 0.4;
+  margin-bottom: 24px;
+}
+
+.social-icons img {
+  width: 32px;
+  height: 32px;
+}
+
+.social-icons a:hover {
+  opacity: 1;
+}
+
+@media (max-width: 975px) {
+  .social-icons {
+    display: none;
+  }
+}
+
+.heading-decoration {
+  position: absolute;
+  top: -25px;
+  right: 0px;
+  width: 75px;
+  height: 75px;
+  background: papayawhip;
+  opacity: 1;
+  transform: translateX(12px) skew(-24deg);
+}
+
+.heading-content {
+  position: relative;
+}
