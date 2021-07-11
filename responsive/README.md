@@ -293,6 +293,16 @@ this means our `.column` will never be larger than 800px or 100% of the availabl
 - on larger screens, the max width will be 800px, since 800px is smaller than 100%
 - on smaller screens, the max-width will be 100%, since 100% is smaller than 800px
 
+an easier-to-read way to do this is with `min()`, see below:
+
+```css
+  .column {
+    width: 65%;
+    max-width: 800px;
+    min-width: min(500px, 100%);
+  }
+```
+
 ## min and max
 
 if you want to only clamp from one side, you can use the `min()` and `max()` values instead
