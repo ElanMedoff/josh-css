@@ -99,7 +99,7 @@ desktop-first:
 }
 ```
 
-- each selector overrides the previous one
+- a media query is a way to conditionally add a css rule _in place_, so this means that later rules will still override previous rules, so order matters! in this example, if we had phone>tablet>laptop instead of laptop>tablet>phone, (on any screen) the phone style would always get overridden by the laptop style since we're using `max-width`
 
 mobile-first:
 

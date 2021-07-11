@@ -75,7 +75,7 @@ const UnstyledButtons = styled.div`
   display: none;
   @media ${QUERIES.tabletAndDown} {
     display: flex;
-    gap: clamp(4px, 3vw, 48px);
+    gap: clamp(1rem, 6.9vw - 1.5rem, 2.5rem);
   }
 `;
 
