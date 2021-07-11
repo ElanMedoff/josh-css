@@ -298,3 +298,75 @@ this means our `.column` will never be larger than 800px or 100% of the availabl
 if you want to only clamp from one side, you can use the `min()` and `max()` values instead
 
 # responsive typography
+
+big question: should text grow or shrink on smaller devices?
+
+## body text
+
+body text -- the text in paragraphs and lists -- should stay _stay the same size_!
+
+- try to aim for at least `16px`, but since we like to use `rem` for typography, try to aim for at least `1rem`
+
+## smaller text
+
+smaller bits of text that label or annotate things is normally fine small, but if it looks bad, you can make it larger with a media query:
+
+```css
+@media (max-width: 550px) {
+  figcaption {
+    font-size: 1rem;
+  }
+}
+```
+
+### form fields
+
+form input fields like `<input>` and `<select>` have a pretty small font-size, so if you make it smaller than `1rem`, safari will automatically zoom in. To avoid this, just set the default size to `1rem`
+
+```css
+input,
+select,
+textarea {
+  font-size: 1rem;
+}
+```
+
+## headings
+
+headings are the most complicated, since they don't fit on small screens! you can use a media query, but there's a better way:
+
+# fluid typography
+
+big idea: instead of choosing discrete points where the typography changes, the typography should fluidly change with the viewport
+
+this can be done most simply with the `vw` unit, _but_ this has issues with really small screens. the solution is to use `clamp()`
+
+```scss
+h1 {
+  // ideally 6vw, but at least 1.5 rem, and cap at 3 rem
+  font-size: clamp(1.5rem, 6vw, 3rem);
+}
+```
+
+**IMPORTANT**: safari is weird, so use this too:
+
+```scss
+h1 {
+  font-size: clamp(1.5rem, 6vw, 3rem);
+  min-height: 0vh;
+}
+```
+
+_but_ this introduces a problem where we can't zoom in! the solution is to mix in a relative unit:
+
+```scss
+h1 {
+  font-size: clamp(1.5rem, 4vw + 1rem, 3rem);
+}
+```
+
+so now the `+ 1rem` is controlled by the zoom!
+
+# fluid vs responsive
+
+which is better? media queries are easier for reading the code/markup and intuiting the design, and if you need to change multiple things as the viewport changes size, it's better. on the other hand, fluid layouts are specific to the _container_ not the _viewport_ like media queries!

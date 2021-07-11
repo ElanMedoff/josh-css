@@ -52,11 +52,16 @@ L: lightness, in percentage, how light/dark
 # typography
 
 **em**: relative to font size of the current element
+
 **rem**: relative to font size of the root html tag
 
 **typography**: rem
+
 **padding, border, margin**: px
-**width/height**: fixed, use px, relative, use percentage \*\*\*color\*: hsl
+
+**width/height**: fixed, use px, relative, use percentage
+
+**color**: hsl
 
 Three most popular font families: serif, sans-serif, monospace
 
