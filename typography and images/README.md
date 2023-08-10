@@ -135,3 +135,106 @@ p {
 ```
 
 # masonry grid
+
+```scss
+ul {
+  column-count: 3;
+  // vertical gap between columns
+  column-gap: 16px;
+}
+
+img {
+  // images are inline by default, so they get weird letter spacing ...
+  display: block;
+  margin-bottom: 16px;
+}
+```
+
+masonry layout is from top to bottom, so top left to bottom left, then to top middle, bottom middle, top right, bottom right. this can be an issue with tabbing through really long pages.
+
+# text styling
+
+## line length
+
+long lines can be difficult to read, so setting a max width is a nice feature
+
+```scss
+.selector {
+  max-width: 50ch;
+}
+```
+
+`1ch` is equal to the width of `0` at the current font size.
+
+## text alignment
+
+`text-align` will move all the individual characters to the middle of each line, while `align-items` will move the whole paragraph block to the middle of the container. Big difference!
+
+![align](./align.png)
+
+# web fonts
+
+when downloading a font, try to wrap it in `''`, it helps differentiate it from stack fonts.
+
+you have a few options when it comes to using web fonts. First, you can use something like [google fonts](https://fonts.google.com/), which gives you a link to embed in your html file. However this can come with some loading costs since it has to make a blocking network call to fetch the css.
+
+you can also host a web font yourself (i.e. on your own server) with something like [fontsource](https://fontsource.org/). you can `npm install` the font you want!
+
+the manual way
+
+- convert the font format. fonts are normally `.otf` or `.ttf` whcih the web can't read. convert it with something like this [webfont generator](https://www.fontsquirrel.com/tools/webfont-generator)
+- declare the web font with the `@font-face` tag, one for teach weight and style
+
+```scss
+@font-face {
+  font-family: "Wotfard";
+  src: url("/fonts/wotfard-regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Wotfard";
+  src: url("/fonts/wotfard-medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Wotfard";
+  src: url("/fonts/wotfard-bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Wotfard";
+  src: url("/fonts/wotfard-regular-italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+}
+```
+
+## font loading ux
+
+while the web font loads, you have two options:
+
+1. wait until the web font has been downloaded before showing any text (FOIT)
+1. render a fallback font, one that's locally installed on the user's device (FOUT)
+
+more precisely, there are three windows to be aware of
+
+1. **the block period**: the text is painted in invisibale ink
+1. **the swap period**: a fallback font is rendered, the first available in the font stack
+1. **the failure period**: if the desired font isn't loaded during the previous two periods, it'll show the fallback font forever
+
+`font-display` is a way to control the length of each window
+
+- `font-display: block` has a moderate block period, about 3 seconds, and an infinite swap period
+  - good for fonts that are vital, like icon fonts where the swap would look awful
+- `font-display: swap` has a very short block period, about 100ms, and an infinite swap period
+- `font-display: fallback` has a very short block period with a moderate swap period
+  - recommended by josh, good middle ground
+- `font-dispaly: optional` has a very short block with no swap and an infinite failure
+  - good for fonts that are only a subtle improvements
+
+Some browsers support css properties are called `f-mods`, which can be used to make the swap less jarring
+
+## font optimization
