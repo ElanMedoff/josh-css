@@ -194,18 +194,6 @@ the manual way
 }
 @font-face {
   font-family: "Wotfard";
-  src: url("/fonts/wotfard-medium.woff2") format("woff2");
-  font-weight: 500;
-  font-style: normal;
-}
-@font-face {
-  font-family: "Wotfard";
-  src: url("/fonts/wotfard-bold.woff2") format("woff2");
-  font-weight: 700;
-  font-style: normal;
-}
-@font-face {
-  font-family: "Wotfard";
   src: url("/fonts/wotfard-regular-italic.woff2") format("woff2");
   font-weight: 400;
   font-style: italic;
@@ -238,3 +226,23 @@ more precisely, there are three windows to be aware of
 Some browsers support css properties are called `f-mods`, which can be used to make the swap less jarring
 
 ## font optimization
+
+tl;dr use google fonts, really great compression. if you want to self-host, download the files google optimizes, and defined your own font with `@font-face` like above.
+
+## variable fonts
+
+with old school fonts, each weight and style is its own file. with variable fonts, you have one file that can render different weights and styles!
+
+### variable fonts on google fonts
+
+to update a variable google font `link` to actually fetch and make use of the variable font, modify it to look something like
+
+```html
+<link rel="preconnect" href="https://fonts.gstatic.com" />
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap"
+/>
+```
+
+with the important part being `ital,wght@0,100..900;1,100..900`
