@@ -1,3 +1,5 @@
+# inheritance
+
 ```html
 <p>I know <em>you</em> are, but what am I?</p>
 ```
@@ -13,9 +15,9 @@ the `em` will be styled pink too, even though its not styled directly BUT it won
 
 most typography-related properties are inherited! `color`, `font-size`, `text-shadow`
 
-to force inheritance, you can use the keyword declaration [selector]: inherit
+to force inheritance, you can use the keyword declaration `[property]: inherit`
 
-# The cascade
+# the cascade
 
 good way to think of which rules override which
 
@@ -30,11 +32,11 @@ const appliedStyles = {
 };
 ```
 
-# Cardinality
+# block and inline directions
 
 Just like a real document is structured in vertical blocks of text with each block being made up of horizontal words, css is made up of the block direction and the inline direction
 
-# The box model
+# the box model
 
 ```html
 <section>
@@ -55,10 +57,13 @@ section {
 
 How much space will this take up by default? By default, percentage width refers specifically to the element's inner content! This means that the width will be 500 + any `padding` + any `border`
 
-This is:
-`box-sizing: content-box`
+This is `box-sizing: content-box`
 
-To make the percentage width refer to the `content` + `padding` + `border`, change `box-sizing` to `border-box`. This means that the `content` + `padding` + `border` will all together take up the entire 500 px (note the 500px refers to the content of the parent, if the parent has `padding` or `margin` or a `border`, it's not included in the 500 for the child. If the parent is also `border-box`, and it has``padding`, this `padding` will reduce the actual width of the content.) To make this apply to everything, paste this in:
+To make the percentage width refer to the `content` + `padding` + `border`, change `box-sizing` to `border-box`. This means that the `content` + `padding` + `border` will all together take up the entire 500 px. padding and border take priority, and the content shrinks.
+
+Note the 500px refers to the content of the parent, if the parent has `padding` or `margin` or a `border`, it's not included in the 500 for the child. If the parent is also `border-box`, and it has `padding`, this `padding` will reduce the actual width of the content.
+
+To make this apply to everything, paste this in:
 
 ```scss
 *,
@@ -104,42 +109,22 @@ only field that's required is border-style! Without it no border will appear
 
 ```scss
 .good {
-/_ 🙆‍♀️ Will produce a black, 3px-thick border _/
-border: solid;
+  // will produce a black, 3px-thick border
+  border: solid;
 }
 ```
 
-when a border color isn't specified, it will use the font's color by default (it inherits it!)
+when a border color isn't specified, it will use the font's color by default (it inherits it!). If you want to target this derived text color explicitly, you can use `currentColor`
 
 ```scss
 .box {
-  width: 100px;
-  height: 50px;
-  border: 4px solid;
-}
-```
-
-```scss
-.box.one {
-  // Setting TEXT color,
-  // not border color
-  color: hotpink;
-}
-```
-
-If you want to target this derived text color explicitly, you can use currentColor
-
-```scss
-.box {
-  color: hotpink;
   border: 1px solid currentColor;
-  box-shadow: 2px 2px 2px currentColor;
 }
 ```
 
 ```scss
 .circle {
-  border-radius: 50%;
+  border-radius: 50%; // turns into a circle
 }
 ```
 
@@ -147,7 +132,7 @@ Border vs outline:
 
 outline doesn't affect layout, it's like box-shadow in that its a cosmetic effect draped around an element without changing the size or nudging it around
 
-Outlines are stacked outside of borders, can create a second border for effect
+Outlines are stacked _outside_ of borders, can create a second border for effect
 
 Note: no such thing as outline radius
 BUT: there is an outline-offset property which is like padding
@@ -162,29 +147,16 @@ BUT: there is an outline-offset property which is like padding
 
 ## Margin
 
-Unlike padding and border, margin can be negative to pull an element outside it's parent, or pull a sibling closer
+unlike padding and border, margin can be negative to pull an element outside it's parent, or pull a sibling closer. if you use negative margin on the first sibling, it's siblings will also be pulled!
 
-```scss
-main {
-  width: 200px;
-  height: 200px;
-  border: 3px solid;
-}
+### `auto` margin
 
-.floating-box {
-  width: 50%;
-  height: 50%;
-  border: 3px solid palevioletred;
-  margin-bottom: -32px;
-}
+`auto` margins tell the browser to set the margin to the maximum available space, which you can use to center an element horizontally if you set `margin-left: auto` and `margin-right: auto`
 
-.neighbor {
-  width: 50%;
-  height: 50%;
-  background: silver;
-  margin-left: 16px;
-}
-```
+this has two conditions, though:
+
+1. only works for horizontal centering, not vertical (`margin-top: auto` is equivalent to `0`)
+2. need an explicitly-set width. block elements naturally grow to fill the available width, so need to constrain the width to have space for the margin to grow
 
 # Flow Layout
 
@@ -195,22 +167,31 @@ two exceptions:
 1. buttons are `inline`, but you can change their `width` and `height`
 
 2. replaced elements (`img`, `video`, `canvas`) are `inline`, but they can also affect block layout
+   - it's best to think of these as foreign objects in an `inline` container
 
-`block` elements fill the entire available horizontal space! if we don't want this to happen, we can use width: fit-content
+`block` elements fill the entire available horizontal space! if we don't want this to happen, we can use `width: fit-content`
 
 HOWEVER, even when blocked elements don't take up the entire `width`, another blocked element underneath it won't move up to the same line, it'll still be on the line underneath!
 
+### Inline elements have “magic space”
+
 Images are weird because they're `inline`, so they're treated as typography meaning they have a default `line-height`! This means the parent of an image will be a bit taller than the image itself. To fix this, either set the `display` to `block`, or the `line-height` to 0
 
-unlike block elements, which can only be blocks, `inline` elements can have all kinds of weird shapes -- which is why things like width or height don't always make sense
+### Inline elements can line-wrap
 
-`inline-block` is an element that internally acts like a `block`, but externally acts like its `inline`
+multiple words inside i.e. a `<strong>` will line wrap!
+
+because `inline` elements can have all kinds of weird shapes, things like width or height don't always make sense
+
+### Inline-block
+
+`inline-block` is an element that internally acts like a `block`, but externally acts like its `inline`. this let's you use properties like `width`, `margin-top`, etc.
 
 BUT `inline-block` doesn't wrap :(
 
 ## Width Algorithms
 
-When we use percentage-based widths, those percentages are based on the parent element's content space (how that's calculated is based on context box or box sizing) no matter what the `margin` of the child
+When we use percentage-based widths, those percentages are based on the parent element's content space (how that's calculated is based on context box or box sizing) - no matter what the `margin` of the child. this means that if the child has `margin`, it will actually grow _outside_ the confines of its parent when it has `width: 100%`!
 
 `margin: auto` on the other hand grows as much as it's able too, but it's stopped by the `margin` of the child! and `margin: auto` applies to the child directly, which is why it's stopped by the child's `margin`
 
@@ -218,9 +199,9 @@ When we use percentage-based widths, those percentages are based on the parent e
 
 `width: max-content` is the same, but it won't add any line breaks! it's also intrinsic, so it doesn't care about constraints set by the parent. It won't fill the available space, so if we want to add a background color only around the letters, this is a good way!
 
-`width: fit-content` if the content can fit within the parent container, it behaves like `max-content`, if it needs a line break, it behaves like `width: auto`, meaning it takes up all the space it can
+`width: fit-content` if the content can fit within the parent container, it behaves like `max-content`, if it needs a line break, it behaves like `width: auto`, meaning it takes up all the space it can and will add lines breaks.
 
-`min-width` and `max-width`
+`min-width` and `max-width` let you mix and match units
 
 ```scss
 // want 50% of parent's content, but only when that's between 200 and 300
@@ -288,6 +269,10 @@ The paragraphs will be `24px` apart, not `48`
 
 **only** vertical margin collapses, not horizontal!
 
+## Margins only collapse in flow layout
+
+No margin collapse in flex, grid, etc!
+
 ## Only adjacent elements collapse
 
 ```scss
@@ -327,15 +312,21 @@ This is because margin is meant to increase the distance between, siblings, not 
 
 **this includes `0px`!!!**
 
-## Margins blocked by padding or a border don't collapse
+## Margins must touch to collapse!
+
+1. Margins blocked by padding or a border don't collapse
 
 i.e. if the `<div>` in the previous example had some padding at the bottom, the margin of the child wouldn't be transferred to the outside
 
-## Margins blocked by a gap
+2. Margins blocked by a gap don't collapse
 
 Say you have a parent with a fixed height, and a child with a smaller height, the margin of the child and the margin of the parent's sibling wont' collapse.
 
+3. Margins blocked by a scroll container don't collapse
+
 ## Margins can collapse in the same direction
+
+If the parent has a scroll container by using the `overflow` property, margin on the child won't collapse with the parent's sibling
 
 ```scss
 .parent {
