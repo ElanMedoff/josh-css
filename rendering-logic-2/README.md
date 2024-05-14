@@ -31,7 +31,7 @@ strong {
 
 # Absolute positioning
 
-Allows you to position things absolutely. When we set something to `position: absolute`, we pull it out of the flow! They're like holograms, they don't _really_ exist.
+Allows you to position things absolutely. When we set something to `position: absolute`, we pull it out of the flow, everything else will shfit to take up its space! They're like holograms, they don't _really_ exist.
 
 ```html
 <style>
@@ -57,7 +57,13 @@ So the parent's height is based on the height of the child, but since the child 
 
 ## Absolute sizes
 
-block elements positioned absolutely without specified sizing doesn't shrink to fill the available space, instead it behaves like `width: min-content`. But if it can't break a line, i.e. if the word is too long, it'll either expand the container, or spill out of it and introduce a horizontal scroll if there's a constrained width or with left and right.
+block elements positioned absolutely without specified sizing doesn't grow to fill the available space, which is unusual for block. so how does an absolutely positioned element determine its size?
+
+tl;dr it wants to be as small as it can. it'll grow to fit the content, with a few caveats:
+
+- if there's a fixed width, it will line-break and increase the height, while keeping the specified width
+- if there's a specified `left` and `right`, same as ^
+- if there's a specified `left` but no `right`, it'll grow to the right edge of the screen before it wraps
 
 ## Single Axis
 
@@ -73,6 +79,10 @@ Need 4 things to center an element with absolute positioning:
 2. `top`, `left`, `right`, `bottom` all have to be set to `0`
 3. An explicit `width` and `height`
 4. `margin: auto`
+
+### the `inset` property
+
+can use `inset: 0` to replace explicitly setting `top`, `left`, `right`, and `bottom` to `0`
 
 # Containing Blocks
 
@@ -112,11 +122,12 @@ If we want to specify that one sibling be painted above another, we can follow t
 }
 
 .second.box {
+  // z-index defaults to auto, which is 0
   z-index: 1;
 }
 ```
 
-BUT this only applies to two statically positioned elements, or two non-statically positioned elements. If you have a statically positioned element and a non-statically positioned element in a single stacking context, no matter how much you crank up the z-index of the statically positioned element, it won't go above the non-statically positioned element!
+BUT this only applies to two non-statically positioned elements. If you have a statically positioned element and a non-statically positioned element in a single stacking context, no matter how much you crank up the z-index of the statically positioned element, it won't go above the non-statically positioned element!
 
 ## Stacking contexts
 
@@ -131,6 +142,7 @@ How to create a stacking context
 - adding a `z-index` to a child inside a `display: flex` or `display: grid` container
 - using `transform`, `filter`, `clip-path`, or `perspective`
 - explicitly creating a context with `isolation: isolate`
+- setting `opacity` to less than `1`
 
 # Fixed Positioning
 
@@ -217,6 +229,16 @@ This gives us the property `overflow`, let's look at some examples:
 
 This will help prevent an undesired horizontal scrollbar as well.
 
+## Scroll containers
+
+Something weird happens when you set `overflow-x: scroll`, but `overflow-y: visible` - or vice versa: the y direction is also set to `scroll`! this is because when you set `overflow` to `auto`, `hidden`, or `scroll`, it creates a scroll container. with a scroll container, a child element is guaranteed to never overflow beyond the 4 corners of the container.
+
+in other words, when something becomes a scroll container, it manages the overflow in both directions!
+
+### `overflow: clip`
+
+with `overflow: clip`, we get the same behavior as `hidden`, but we don't create a new scroll container! this lets us use `overflow-x: clip` and still have the y direction overflow as expected
+
 ## horizontal overflow
 
 Images are inline by default, so they'll line-wrap when they can't all fit.
@@ -227,6 +249,8 @@ horizontally scroll.
 ## overflow and containing blocks
 
 In order for the overflow property of a parent to apply to the child, the child must be contained by the parent! This means that if you have a child positioned absolutely, and a parent that is statically positioned (so the child isn't contained by the parent), any overflow properties of the parent don't apply to the child!
+
+this also means that if you have a child who's `position: fixed`, it's parent's overflow properties won't affect it, because fixed elements are contained by the viewport. it follows that if the fixed element is the only element that would cause the parent to have a scroll bar, the parent won't have a scroll bar.
 
 # sticky positioning
 
@@ -250,7 +274,9 @@ Sticky elements do take up space while they act non-fixed, unlike absolutely or 
 
 ## a parent is hiding overflow
 
-if an ancestor has `overflow` set to `hidden`, `scroll`, or `auto`, `position: sticky` won't work. Use this snippet to find the bad ancestors:
+if an ancestor has `overflow` set to `hidden`, `scroll`, or `auto`, `position: sticky` won't work. this is because setting `overflow` creates a scroll container, so the element will only be sticky when scrolling _within_ the scroll container!
+
+Use this snippet to find the bad ancestors:
 
 ```js
 // Replace this with a relevant selector.
@@ -295,3 +321,24 @@ the parent can be hidden while the child visible, which is _weird_, but maybe us
 ## opacity
 
 even at 0 opacity, elements still take up space, buttons can still be clicked, text can still be selected, and form elements can still be focused -- be careful about accessibility issues with tabbing through!
+
+## screen readers
+
+to show something to a screen reader, but hide visually, use a `VisuallyHidden` component/class, something like:
+
+```scss
+.visually-hidden {
+  position: absolute;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  width: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+}
+```
+
+can also use `aria-label`
+
+to hide from screen readers, like if you have a visual flourish that doesn't serve any practical purpose, use `aria-hidden` and `inert`. `inert` is important because any children of `aria-hidden` aren't actually hidden! `inert` fixes that
