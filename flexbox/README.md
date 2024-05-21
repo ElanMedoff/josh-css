@@ -10,15 +10,15 @@ BUT inline elements take up non-greedy width (what you'd expect) but also non-gr
 
 ---
 
-`justify-content` has a `space-between` and `space-around`, which `align-items` doesn't have. Why? Because flexbox is supposed to be a 1-d system, and since `justify-content` is for the primary axis, it doesn't really make sense the set the space between the items in the cross axis -- because there isn't really items in the cross axis! Sometimes they overflow, but flexbox isn't really meant to deal with those situations.
+`justify-content` has a `space-between` and `space-around`, which `align-items` doesn't have. Why?
+
+Flexbox is supposed to be a 1-d system, with `justify-content` controlling the space between multiple items on the primary axis. `space-between` and `space-around` are used to space multiple items, so it make sense that you can use them with `justify-content`. on the other hand, `align-items` is for the cross axis. sometimes the cross axis has multiple items (i.e. if you wrap), but most of the time they don't, they just have a single item on the axis, so it doesn't make sense to use `space-between` and `space-around` with `align-items`.
 
 `justify-content: stretch` doesn't exist because it can be done in better ways -- tbd.
 
-The same thing with `align-items: baseline`
-
 ---
 
-for `justify-content: space-between`, the items on the edges have twice as much padding on the edge as on the non-edge side. `justify-content: space-evenly` has the items on the edge have as much padding as the non-edge side.
+for `justify-content: space-between`, each item has left and right "padding", so the between items is twice that padding, and between an item and the edge is only that padding. `justify-content: space-evenly` has the items on the edge have as twice as much padding, so all the spacing is even.
 
 # alignment tricks
 
@@ -30,7 +30,7 @@ for `justify-content: space-between`, the items on the edges have twice as much 
 
 A child can align itself using `align-self: ` with the right side of the colon being any `align-items` argument
 
-`justify-self` doesn't exist, and it makes sense, since most `justify-content` rules deal with how to space multiple elements relative to eachother (think `space-between`, etc.)
+`justify-self` doesn't exist, and it makes sense, since most `justify-content` rules deal with how to space multiple elements relative to eachother (think `space-between`, etc.). what if you had `justify-self: center`, would that mean centered between the left and right elements? not clear
 
 Instead, we can use other properties like `flex-grow`, `flex-shrink`, `flex-basis`, and `order`
 
@@ -38,7 +38,7 @@ Instead, we can use other properties like `flex-grow`, `flex-shrink`, `flex-basi
 
 There's this concept called hypothetical size, which is the width/height if no other force was acted upon the element. By default, this is the size of the line without breaks. If you give it a fixed width, the hypothetical size will be that fixed width
 
-**however** a fixed width does not maintain that width when the element is forced to shrink! _fixed widths/heights (a set hypothetical size) with flexbox are more like suggestions_
+**however** a fixed width does not maintain that width when the element is forced to shrink! (in `position: static`, it would) _fixed widths/heights (a set hypothetical size) with flexbox are more like suggestions_
 
 - note, a fixed width could set the hypothetical size below the minimum content size, while flex-basis can't
 
@@ -48,7 +48,7 @@ There's this concept called hypothetical size, which is the width/height if no o
 
 There's also another concept called minimum content size, which is the minimum size that the element will shrink to -- think of it like `width: min-content`. it'll break lines, but not words.
 
-`flex-shrink` can be thought of as "how quickly should I shrink from my hypothetical size when there isn't enough space for my hypothetical size?" -- it only acts when an element is between its minimum size and it's hypothetical size
+`flex-shrink` can be thought of as "how quickly should I shrink from my hypothetical size when there isn't enough space for my hypothetical size?" -- it only acts when an element is between its minimum size and it's hypothetical size. `flex-shrink` won't shrink an element below its minimum size.
 
 ## flex shorthand
 
