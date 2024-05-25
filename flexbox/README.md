@@ -73,11 +73,19 @@ although the hypothetical size (often set by a fixed width/height) is more of a 
 `flex-basis` will overwrite `width`, so if we have a situation like this:
 
 ```scss
-flex: 1;
-width: 250px;
+.item {
+  flex: 1;
+  width: 250px;
+}
 ```
 
-`flex: 1` is implicitly setting the basis to `0px`, which then overrides the `width: 250px`!
+`flex: 1` is implicitly setting the basis to `0px`, which then overrides the `width: 250px`! to prevent this, it's easier to be explicit
+
+```scss
+.item {
+  flex: 1 1 250px;
+}
+```
 
 # wrapping
 
@@ -101,6 +109,8 @@ you can flip the order with `flex-direction: row-reverse`, but that also moves e
 flex-direction: row-reverse;
 justify-content: flex-end;
 ```
+
+can also use the `order` property, which works similar to `z-index` i.e. higher `order` values appear after lower `order` values
 
 # flex-box interaction
 
