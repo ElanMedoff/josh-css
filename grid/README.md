@@ -193,3 +193,50 @@ indicies start at 1! can either go right to left, 1 -> 2, or go left to right, -
 if an element spans only one row or column, can omit the `/ [ending-row]` and `/ [ending-column]` for brevity
 
 # fluid grids
+
+```scss
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+}
+```
+
+^ will create as many columns (of the same width) as possible, while keeping each above the min size of `150px`
+
+## clamping with `minmax`
+
+basically what you expect, but with one gotcha: if you're using a `fr` value, it has to be the max, not the min.
+
+## `auto-fill` vs `auto-fit`
+
+when given empty space, should we create empty columns (`auto-fill`) or stretch the existing columns to be really wide, filing the space (`auto-fit`)
+
+## dealing with a large `min` value
+
+what if you have a large min value, say `400px`, so the column will overflow on small screens? One option would be to use a media query to use `fr` on small screens, and `400px` on large screens, but that's a little clunky. another option is a fluid approach:
+
+```scss
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(400px, 100%), 1fr));
+}
+```
+
+on small screens, `100%` will "resolve" to a specific px size of the parent, and be smaller than `400px` - just a single flexible column, no overflow. on larger screens, `400px` is smaller than the size of the parent, so it becomes the min, and you have may have multiple columns (if there's enough room for more than one `400px` wide column)
+
+# sticky grids
+
+you can use `position: sticky` on a grid element (a child of something with `display: grid`), but it'll have some strange behaviors. a good approach is to have the sticky element not be a direct child of the grid wrapper - instead, create a wrapper around the sticky element. once the sticky element isn't affected by grid, it'll behave more normally.
+
+# managing overflow
+
+it's important to note that `fr` doesn't just distribute extra space, like `flex-grow`, it'll also accomodate the size of it's child based on it's content - even if it's huge. how can you manage huge children that overflow?
+
+1. if you put `overflow: auto` on the grid child directly, it'll work as expected
+
+2. use `minmax(0, 1fr)` to indicate that the grid child can shrink below the child's width
+
+# grid quirks
+
+- margin on grid children won't collapse, in either direction
+- `z-index` normally only works in positioned layout, but a grid child can use the property even if it doesn't change `position`!
