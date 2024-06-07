@@ -126,8 +126,8 @@ to align an item vertically within its cell, use `align-items`
 
 ### tl;dr
 
-- justify is for columns / vertically
-- align is for rows / horizontally
+- justify is for columns / horizontally
+- align is for rows / vertically
 - content is for between cells
 - items is for within cells
 
